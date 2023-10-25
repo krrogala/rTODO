@@ -23,15 +23,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install
+      working-directory: services/todo_api
     
     - name: Run isort
       run: poetry run isort --profile black . --check
+      working-directory: services/todo_api
 
     - name: Run black
       run: poetry run black . --check
+      working-directory: services/todo_api
     
     - name: Run flake8
       run: poetry run flake8 .
+      working-directory: services/todo_api
     
     - name: Run bandit
       run: poetry run bandit -r .
+      working-directory: services/todo_api
