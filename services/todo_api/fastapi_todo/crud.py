@@ -11,7 +11,7 @@ async def get_todo(db: AsyncSession, todo_id: int):
 
 async def get_todos(db: AsyncSession, skip: int = 0, limit: int = 10):
     result = await db.execute(select(models.Todo).offset(skip).limit(limit))
-    return await result.scalars().all()
+    return result.scalars().all()
 
 
 async def create_todo(db: AsyncSession, todo: schemas.TodoCreate):
