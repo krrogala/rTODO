@@ -1,15 +1,22 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+
 from . import models, schemas
 
-def get_todo(db: Session, todo_id: int):
-    return db.query(models.Todo).filter(models.Todo.id == todo_id).first()
 
-def get_todos(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(models.Todo).offset(skip).limit(limit).all()
+async def get_todo(db: AsyncSession, todo_id: int):
+    result = await db.execute(select(models.Todo).filter_by(id=todo_id))
+    return await result.scalar()
 
-def create_todo(db: Session, todo: schemas.TodoCreate):
+
+async def get_todos(db: AsyncSession, skip: int = 0, limit: int = 10):
+    result = await db.execute(select(models.Todo).offset(skip).limit(limit))
+    return await result.scalars().all()
+
+
+async def create_todo(db: AsyncSession, todo: schemas.TodoCreate):
     db_todo = models.Todo(**todo.dict())
     db.add(db_todo)
-    db.commit()
-    db.refresh(db_todo)
+    await db.commit()
+    await db.refresh(db_todo)
     return db_todo
