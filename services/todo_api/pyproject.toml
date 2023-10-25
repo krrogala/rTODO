@@ -6,7 +6,7 @@ authors = ["Kevin Rogala <krrogala@proton.me>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.9"
 fastapi = "^0.104.0"
 uvicorn = "^0.23.2"
 sqlalchemy = {extras = ["async"], version = "^2.0.22"}
