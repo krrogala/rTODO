@@ -1,9 +1,10 @@
 # fastapi_todo/crud.py
 
-from .models import Todo
-from .database import AsyncSessionLocal
 from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
+
+from .database import AsyncSessionLocal
+from .models import Todo
+
 
 async def create_todo(todo: dict):
     async with AsyncSessionLocal() as session:
@@ -12,6 +13,7 @@ async def create_todo(todo: dict):
         await session.commit()
         await session.refresh(new_todo)
         return new_todo
+
 
 async def get_todos():
     async with AsyncSessionLocal() as session:
