@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from contextlib import asynccontextmanager
 
 from . import crud, database, models, schemas
 
@@ -11,11 +12,10 @@ async def get_db():
     async with database.AsyncSessionLocal() as db:
         yield db
 
-
-@app.on_event("startup")
-async def startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     async with database.engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.create_all)
+        await conn.run_async(models.Base.metadata.create_all)
 
 
 @app.post("/todos/", response_model=schemas.Todo)

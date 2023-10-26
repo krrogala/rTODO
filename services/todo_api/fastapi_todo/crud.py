@@ -15,7 +15,7 @@ async def get_todos(db: AsyncSession, skip: int = 0, limit: int = 10):
 
 
 async def create_todo(db: AsyncSession, todo: schemas.TodoCreate):
-    db_todo = models.Todo(**todo.dict())
+    db_todo = models.Todo(**todo.model_dump())
     db.add(db_todo)
     await db.commit()
     await db.refresh(db_todo)
