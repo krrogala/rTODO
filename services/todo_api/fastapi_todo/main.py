@@ -29,3 +29,7 @@ def todo(todo_id: int, db: Session = Depends(get_db)):
 @app.post("/todos/")
 def create_todo(todo: TodoCreate, db: Session = Depends(get_db)):
     return crud.create_do(db=db, todo=todo)
+
+@app.post("/todos/{todo_id}")
+def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    return crud.delete_do(db=db, todo_id=todo_id)
